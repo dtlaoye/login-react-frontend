@@ -1,0 +1,80 @@
+/* Make the homepage container take the full height of the viewport */
+
+body {
+  background-color: #eaeff3;
+  background: none !important;
+}
+.expedia-homepage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Ensure the header and search bar only take up necessary space */
+.header {
+  background-color: #004f6e;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-bar {
+  background-color: #eaeff3;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* The featured destinations should grow to fill available space */
+.featured-destinations {
+  padding: 40px 20px;
+  text-align: center;
+  flex-grow: 1; /* Allow this section to take up remaining space */
+}
+
+.featured-destinations h2 {
+  margin-bottom: 20px;
+}
+
+.destinations-list {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.destination-card {
+  width: 200px;
+  text-align: center;
+}
+
+.destination-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+/* The footer stays at the bottom */
+.footer {
+  background-color: #004f6e;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-links a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.social-media a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
