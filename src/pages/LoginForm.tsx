@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { gql, useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
 import "../styles/App.css";
 
 const LOGIN_MUTATION = gql`
@@ -14,50 +15,52 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
-function ToggleLogin() {
-  const [isSignUp, setIsSignUp] = useState(false);
+const REGISTER_MUTATION = gql`
+  mutation Register($username: String!, $password: String!) {
+    register(username: $username, password: $password)
+  }
+`;
 
-  const [correctUsername, setCorrectUsername] = useState("test123@gmail.com");
-  const [correctPassword, setCorrectPassword] = useState("password123");
+function LoginForm() {
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [incorrectCreds, setIncorrectCreds] = useState(false);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const [incorrectCreds, setIncorrectCreds] = useState(false);
-  const [goToHomePage, setGoToHomePage] = useState(false);
-
-  // const [login] = useMutation(LOGIN_MUTATION);
+  const [login] = useMutation(LOGIN_MUTATION);
+  const [register] = useMutation(REGISTER_MUTATION);
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     setIsSignUp((prev) => !prev);
-  };
-
-  const handleSignIn = () => {
-    console.log(username, correctUsername, password, correctPassword);
-    if (username === correctUsername && password == correctPassword) {
-      setIncorrectCreds(false);
-    } else {
-      setIncorrectCreds(true);
-    }
-  };
-
-  const handleSignUp = () => {
-    alert("Registered");
   };
 
   useEffect(() => {
     console.log("Flag is now", incorrectCreds);
   }, [incorrectCreds]);
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     const { data } = await login({ variables: { username, password } });
-  //     localStorage.setItem("token", data.login.token);
-  //     // Redirect to home page after login
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const { data } = await login({ variables: { username, password } });
+    if (data?.login) {
+      localStorage.setItem("token", data.login);
+      navigate("/homepage");
+    } else {
+      alert("Login failed");
+    }
+  };
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const { data } = await register({ variables: { username, password } });
+    if (data?.register) {
+      localStorage.setItem("token", data.register);
+      alert("Registered");
+      handleToggle();
+    } else {
+      alert("Registration failed");
+    }
+  };
 
   return (
     <div className={`cont ${isSignUp ? "s--signup" : ""}`}>
@@ -81,7 +84,7 @@ function ToggleLogin() {
             Incorrect username or password. Try again.
           </p>
         )}
-        <button type="button" className="submit" onClick={handleSignIn}>
+        <button type="button" className="submit" onClick={handleLogin}>
           Sign In
         </button>
         <button type="button" className="fb-btn">
@@ -120,7 +123,7 @@ function ToggleLogin() {
             <span>Password</span>
             <input type="password" />
           </label>
-          <button type="button" className="submit" onClick={handleSignUp}>
+          <button type="button" className="submit" onClick={handleRegister}>
             Sign Up
           </button>
           <button type="button" className="fb-btn">
@@ -132,4 +135,4 @@ function ToggleLogin() {
   );
 }
 
-export default ToggleLogin;
+export default LoginForm;

@@ -1,18 +1,20 @@
-import React, { useState } from "react";
-import ToggleLogin from "./pages/ToggleLogin";
+import { ApolloProvider } from "@apollo/client";
+import client from "./ApolloClient";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginForm from "./pages/LoginForm";
 import Homepage from "./pages/Homepage";
 import "./styles/App.css";
 
 function App() {
-  const [parentValue, setParentValue] = useState<boolean>(false);
-
-  const handleChildValue = (valueFromChild: boolean) => {
-    setParentValue(valueFromChild);
-  };
   return (
-    <div className="app">
-      <ToggleLogin />
-    </div>
+    <ApolloProvider client={client}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LoginForm />} />
+          <Route path="/homepage" element={<Homepage />} />
+        </Routes>
+      </Router>
+    </ApolloProvider>
   );
 }
 
