@@ -11,7 +11,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleAuthentication = () => {
-    setIsAuthenticated(true);
+    setIsAuthenticated(!isAuthenticated);
   };
 
   return (
@@ -29,7 +29,7 @@ function App() {
                 isAllowed={isAuthenticated}
                 redirectPath="/homepage"
               >
-                <HomePage />
+                <HomePage onAction={handleAuthentication} />
               </ProtectedRoute>
             }
           />

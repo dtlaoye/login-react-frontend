@@ -1,10 +1,20 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/Homepage.css";
 
-const HomePage = () => {
+type HomePageProps = {
+  onAction: () => void;
+};
+
+const HomePage = ({ onAction }: HomePageProps) => {
   const location = useLocation();
   const { username } = location.state || {};
+  const navigate = useNavigate();
+
+  const handleLogOut = () => {
+    onAction();
+    navigate("/");
+  };
 
   return (
     <div>
@@ -15,10 +25,7 @@ const HomePage = () => {
             <i className="material-icons">menu</i>
           </button>
           <nav id="nav">
-            <a href="#">Home</a>
-            <a href="#">Sign Up</a>
-            <a href="#">About</a>
-            <a href="#">Privacy</a>
+            <a onClick={handleLogOut}>Log Out</a>
           </nav>
         </div>
       </header>
@@ -31,9 +38,6 @@ const HomePage = () => {
               <br />
               Save on Amtrak, Greyhound, MegaBus, and many airlines
             </p>
-            <a href="#" className="btn">
-              Sign Up Now!
-            </a>
           </div>
         </div>
         <div className="grid">
@@ -92,7 +96,6 @@ const HomePage = () => {
           <div className="item">
             <p>
               <a href="#">Your Privacy</a>
-              <a href="#">Careers</a>
               <a href="#">Contact Us</a>
             </p>
           </div>
