@@ -21,14 +21,20 @@ const LOGIN = gql`
   }
 `;
 
-function LoginForm() {
-  const [registeredState, setRegisteredState] = useState(false);
-  const [incorrectCreds, setIncorrectCreds] = useState(false);
+type LoginFormProps = {
+  onAction: () => void;
+};
 
+function LoginForm({ onAction }: LoginFormProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [login] = useMutation(LOGIN);
   const [register] = useMutation(REGISTER);
+
+  const [registeredState, setRegisteredState] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState();
+
   const navigate = useNavigate();
 
   const handleToggle = () => {
@@ -36,8 +42,11 @@ function LoginForm() {
   };
 
   useEffect(() => {
-    console.log("Flag is now", incorrectCreds);
-  }, [incorrectCreds]);
+    if (currentUser) {
+      onAction();
+      navigate("/homepage", { state: { username: currentUser } });
+    }
+  }, [currentUser]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +54,7 @@ function LoginForm() {
       const { data } = await login({ variables: { username, password } });
       if (data.login) {
         alert(`Welcome back, ${data.login.username}!`);
-        // Handle successful login (e.g., store token/session)
+        setCurrentUser(data.login.username);
       } else {
         alert("Invalid credentials. Please try again.");
       }
@@ -84,11 +93,6 @@ function LoginForm() {
             />
           </label>
           <p className="forgot-pass">Forgot password?</p>
-          {incorrectCreds && (
-            <p className="incorrect-msg">
-              Incorrect username or password. Try again.
-            </p>
-          )}
           <button type="button" className="submit" onClick={handleLogin}>
             Login
           </button>

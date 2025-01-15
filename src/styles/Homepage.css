@@ -1,80 +1,181 @@
-/* Make the homepage container take the full height of the viewport */
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+.grid {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 3.125%;
+}
+.grid::after {
+  clear: both;
+  content: "";
+  display: block;
+}
+
+.col-3 {
+  float: left;
+  display: block;
+  margin-right: 3.1684362651%;
+  width: 31.2210424899%;
+}
+.col-3:last-child {
+  margin-right: 0;
+}
+@media (max-width: 570px) {
+  .col-3 {
+    float: left;
+    display: block;
+    margin-right: 3.1684362651%;
+    width: 100%;
+  }
+  .col-3:last-child {
+    margin-right: 0;
+  }
+}
 
 body {
-  background-color: #eaeff3;
-  background: none !important;
+  background: #efefef;
+  color: #292929;
+  font-family: "Open Sans", "Roboto", sans-serif;
+  font-size: 18px;
 }
-.expedia-homepage {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
+body a {
+  text-decoration: none;
+  color: inherit;
+}
+body a:hover {
+  text-decoration: underline;
 }
 
-/* Ensure the header and search bar only take up necessary space */
-.header {
-  background-color: #004f6e;
-  padding: 10px 20px;
+header {
+  width: 100%;
+  background: #e0e0e0;
+  box-shadow: 0 0 5px 1px black;
+}
+header .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 3.125%;
   display: flex;
+  flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
+  align-content: stretch;
 }
-
-.search-bar {
-  background-color: #eaeff3;
-  padding: 20px;
+header .container button {
+  display: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+}
+@media (max-width: 570px) {
+  header .container button {
+    display: block;
+  }
+}
+header .container nav {
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: stretch;
+}
+@media (max-width: 570px) {
+  header .container nav {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    position: absolute;
+    left: 0;
+    top: 71px;
+    width: 100%;
+  }
+  header .container nav a {
+    background: #efefef;
+    text-align: center;
+    width: 100%;
+  }
+}
+header .container nav a {
+  padding: 22px 10px;
+}
+header .container nav a:hover {
+  text-decoration: none;
+  background: #c7c7c7;
 }
 
-/* The featured destinations should grow to fill available space */
-.featured-destinations {
-  padding: 40px 20px;
+main .hero {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: url(https://images.unsplash.com/photo-1448056975861-28196f26abd6?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1000&q=80)
+    no-repeat top center;
+  background-size: cover;
+}
+main .hero .text {
+  padding: 10%;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.5)
+  );
+  text-align: right;
+  color: #efefef;
+}
+main .hero .text .btn {
+  background: #638ccf;
+  border-radius: 4px;
+  padding: 8px;
+}
+main .hero .text .btn:hover {
+  text-decoration: none;
+  background: #507ec9;
+}
+main .hero .text .btn:active {
+  background: #3c6fc3;
+}
+main .grid {
+  max-width: 1400px;
+}
+main .grid .panel {
+  background: #efefef;
+}
+main .grid .panel .head {
   text-align: center;
-  flex-grow: 1; /* Allow this section to take up remaining space */
+}
+main .grid .panel .head .material-icons {
+  font-size: 30px;
+}
+main .grid .panel .body {
+  padding: 0 5px;
 }
 
-.featured-destinations h2 {
-  margin-bottom: 20px;
+footer {
+  width: 100%;
+  background: #292929;
 }
-
-.destinations-list {
+footer .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  color: #efefef;
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  align-content: center;
+  padding: 3.125%;
 }
-
-.destination-card {
-  width: 200px;
-  text-align: center;
-}
-
-.destination-card img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-}
-
-/* The footer stays at the bottom */
-.footer {
-  background-color: #004f6e;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-}
-
-.footer-links a {
-  color: white;
-  margin: 0 10px;
-  text-decoration: none;
-}
-
-.social-media a {
-  color: white;
-  margin: 0 10px;
-  text-decoration: none;
+footer .container .item:first-of-type a {
+  display: block;
 }
