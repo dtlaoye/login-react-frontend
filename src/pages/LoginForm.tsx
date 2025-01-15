@@ -67,6 +67,7 @@ function LoginForm({ onAction }: LoginFormProps) {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log(username, password);
       const { data } = await register({ variables: { username, password } });
       alert(`User registered successfully: ${data.register.username}`);
     } catch (error: any) {
@@ -119,11 +120,19 @@ function LoginForm({ onAction }: LoginFormProps) {
             <h2>Time to feel like home</h2>
             <label>
               <span>Username</span>
-              <input type="text" />
+              <input
+                type="text"
+                value={username} // Bind the username state
+                onChange={(e) => setUsername(e.target.value)} // Update the username state
+              />
             </label>
             <label>
               <span>Password</span>
-              <input type="password" />
+              <input
+                type="password"
+                value={password} // Bind the password state
+                onChange={(e) => setPassword(e.target.value)} // Update the password state
+              />
             </label>
             <button type="button" className="submit" onClick={handleRegister}>
               Register
