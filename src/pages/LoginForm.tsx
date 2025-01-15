@@ -3,36 +3,36 @@ import { gql, useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import "../styles/App.css";
 
-const LOGIN_MUTATION = gql`
-  mutation Login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      token
-      user {
-        id
-        username
-      }
+const REGISTER = gql`
+  mutation Register($username: String!, $password: String!) {
+    register(username: $username, password: $password) {
+      id
+      username
     }
   }
 `;
 
-const REGISTER_MUTATION = gql`
-  mutation Register($username: String!, $password: String!) {
-    register(username: $username, password: $password)
+const LOGIN = gql`
+  mutation Login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      id
+      username
+    }
   }
 `;
 
 function LoginForm() {
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [registeredState, setRegisteredState] = useState(false);
   const [incorrectCreds, setIncorrectCreds] = useState(false);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [login] = useMutation(LOGIN_MUTATION);
-  const [register] = useMutation(REGISTER_MUTATION);
+  const [login] = useMutation(LOGIN);
+  const [register] = useMutation(REGISTER);
   const navigate = useNavigate();
 
   const handleToggle = () => {
-    setIsSignUp((prev) => !prev);
+    setRegisteredState((prev) => !prev);
   };
 
   useEffect(() => {
@@ -41,94 +41,90 @@ function LoginForm() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data } = await login({ variables: { username, password } });
-    if (data?.login) {
-      localStorage.setItem("token", data.login);
-      navigate("/homepage");
-    } else {
-      alert("Login failed");
+    try {
+      const { data } = await login({ variables: { username, password } });
+      if (data.login) {
+        alert(`Welcome back, ${data.login.username}!`);
+        // Handle successful login (e.g., store token/session)
+      } else {
+        alert("Invalid credentials. Please try again.");
+      }
+    } catch (error: any) {
+      console.error("Error:", error.message);
+      alert("An error occurred. Please try again.");
     }
   };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data } = await register({ variables: { username, password } });
-    if (data?.register) {
-      localStorage.setItem("token", data.register);
-      alert("Registered");
-      handleToggle();
-    } else {
-      alert("Registration failed");
+    try {
+      const { data } = await register({ variables: { username, password } });
+      alert(`User registered successfully: ${data.register.username}`);
+    } catch (error: any) {
+      console.error("Error:", error.message);
+      alert("An error occurred. Please try again.");
     }
   };
 
   return (
-    <div className={`cont ${isSignUp ? "s--signup" : ""}`}>
-      <div className="form sign-in">
-        <img className="logo" src="./src/images/logo192.png" />
-        <h2>Welcome back</h2>
-        <label>
-          <span>Email</span>
-          <input type="email" onChange={(e) => setUsername(e.target.value)} />
-        </label>
-        <label>
-          <span>Password</span>
-          <input
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <p className="forgot-pass">Forgot password?</p>
-        {incorrectCreds && (
-          <p className="incorrect-msg">
-            Incorrect username or password. Try again.
-          </p>
-        )}
-        <button type="button" className="submit" onClick={handleLogin}>
-          Sign In
-        </button>
-        <button type="button" className="fb-btn">
-          Connect with <span>facebook</span>
-        </button>
-      </div>
-      <div className="sub-cont">
-        <div className="img">
-          <div className="img__text m--up">
-            <h2>New here?</h2>
-            <p>Sign up and discover a great amount of new opportunities!</p>
-          </div>
-          <div className="img__text m--in">
-            <h2>One of us?</h2>
-            <p>
-              If you already have an account, just sign in. We've missed you!
-            </p>
-          </div>
-          <div className="img__btn" onClick={handleToggle}>
-            <span className="m--up">Sign Up</span>
-            <span className="m--in">Sign In</span>
-          </div>
-        </div>
-        <div className="form sign-up">
+    <div className="app">
+      <div className={`cont ${registeredState ? "s--signup" : ""}`}>
+        <div className="form sign-in">
           <img className="logo" src="./src/images/logo192.png" />
-          <h2>Time to feel like home</h2>
+          <h2>Welcome back</h2>
           <label>
-            <span>Name</span>
-            <input type="text" />
-          </label>
-          <label>
-            <span>Email</span>
-            <input type="email" />
+            <span>Username</span>
+            <input type="text" onChange={(e) => setUsername(e.target.value)} />
           </label>
           <label>
             <span>Password</span>
-            <input type="password" />
+            <input
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </label>
-          <button type="button" className="submit" onClick={handleRegister}>
-            Sign Up
+          <p className="forgot-pass">Forgot password?</p>
+          {incorrectCreds && (
+            <p className="incorrect-msg">
+              Incorrect username or password. Try again.
+            </p>
+          )}
+          <button type="button" className="submit" onClick={handleLogin}>
+            Login
           </button>
-          <button type="button" className="fb-btn">
-            Join with <span>facebook</span>
-          </button>
+        </div>
+        <div className="sub-cont">
+          <div className="img">
+            <div className="img__text m--up">
+              <h2>New here?</h2>
+              <p>Sign up and discover a great amount of new opportunities!</p>
+            </div>
+            <div className="img__text m--in">
+              <h2>One of us?</h2>
+              <p>
+                If you already have an account, just sign in. We've missed you!
+              </p>
+            </div>
+            <div className="img__btn" onClick={handleToggle}>
+              <span className="m--up">Register</span>
+              <span className="m--in">Login</span>
+            </div>
+          </div>
+          <div className="form sign-up">
+            <img className="logo" src="./src/images/logo192.png" />
+            <h2>Time to feel like home</h2>
+            <label>
+              <span>Username</span>
+              <input type="text" />
+            </label>
+            <label>
+              <span>Password</span>
+              <input type="password" />
+            </label>
+            <button type="button" className="submit" onClick={handleRegister}>
+              Register
+            </button>
+          </div>
         </div>
       </div>
     </div>
