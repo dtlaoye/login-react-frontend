@@ -66,13 +66,17 @@ function LoginForm({ onAction }: LoginFormProps) {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      console.log(username, password);
-      const { data } = await register({ variables: { username, password } });
-      alert(`User registered successfully: ${data.register.username}`);
-    } catch (error: any) {
-      console.error("Error:", error.message);
-      alert("An error occurred. Please try again.");
+    if (username.length === 0 || password.length === 0) {
+      alert("Please make sure all fields are filled out.");
+    } else {
+      try {
+        console.log(username, password);
+        const { data } = await register({ variables: { username, password } });
+        alert(`User registered successfully: ${data.register.username}`);
+      } catch (error: any) {
+        console.error("Error:", error.message);
+        alert("An error occurred. Please try again.");
+      }
     }
   };
 
@@ -80,7 +84,6 @@ function LoginForm({ onAction }: LoginFormProps) {
     <div className="app">
       <div className={`cont ${registeredState ? "s--signup" : ""}`}>
         <div className="form sign-in">
-          <img className="logo" src="./src/images/logo192.png" />
           <h2>Welcome back</h2>
           <label>
             <span>Username</span>
@@ -116,7 +119,6 @@ function LoginForm({ onAction }: LoginFormProps) {
             </div>
           </div>
           <div className="form sign-up">
-            <img className="logo" src="./src/images/logo192.png" />
             <h2>Time to feel like home</h2>
             <label>
               <span>Username</span>
