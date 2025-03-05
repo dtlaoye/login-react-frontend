@@ -1,3 +1,7 @@
+# login-react-frontend
+A frontend app built with React and Apollo Client, seamlessly integrating with a GraphQL backend powered by MongoDB. The app provides a user-friendly login, registration, and session management experience with secure authentication flows, including JWT handling and error management.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -44,4 +48,4 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-# rotation-login-frontend
+
